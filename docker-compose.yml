@@ -1,0 +1,46 @@
+version: '3.3'
+
+services:
+  nginx:
+    build:
+      context: ./nginx
+    container_name: nginx
+    restart: always
+    ports: 
+      - '8080:80'
+    depends_on:
+      - node
+    networks:
+      - network-nginx-teste
+  
+  node:
+    container_name: node
+    restart: always
+    build:
+      context: ./node
+    depends_on:
+      - db
+    networks:
+      - network-nginx-teste
+
+  db:
+    build: 
+      context: ./mysql
+    container_name: db
+    restart: always
+    tty: true
+    networks:
+      - network-nginx-teste
+    volumes:
+      - ./mysql/volume:/var/lib/mysql
+    cap_add:
+      - SYS_NICE  # CAP_SYS_NICE 
+    security_opt:
+      - seccomp:unconfined   
+    environment:
+      - MYSQL_DATABASE=nodedb
+      - MYSQL_ROOT_PASSWORD=root
+
+networks:
+  network-nginx-teste:
+    driver: bridge
