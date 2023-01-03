@@ -1,4 +1,4 @@
-# desafio docjer nginx
+# desafio docker nginx
 FullCycle 3.0 - Desafio com Nginx e Docker
 
 ### Descrição do desafio
